@@ -47,6 +47,7 @@
   "dependencies": {
     "aws-sdk": "^2.109.0",
     "iopipe": "^1.2.0",
-    "iopipe-plugin-profiler": "github:iopipe/iopipe-plugin-profiler"
+    "iopipe-plugin-profiler": "github:iopipe/iopipe-plugin-profiler",
+    "iopipe-plugin-trace": "^0.2.0"
   }
 }

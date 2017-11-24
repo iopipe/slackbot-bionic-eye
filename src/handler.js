@@ -21,9 +21,10 @@ const s3 = new AWS.S3({apiVersion: '2006-03-01'}),
 const imgRegex = /(\S\.(png|jpeg|jpg|jpeg-large|jpg-large))(?:\s+|$)/ig
 
 
-const profiler = require('iopipe-plugin-profiler');
+const profilerPlugin = require('iopipe-plugin-profiler');
+const tracePlugin = require('iopipe-plugin-trace');
 const iopipe = require('iopipe')({
-  plugins: [profiler()]
+  plugins: [profilerPlugin(), tracePlugin()]
 });
 
 exports.handler = iopipe((event, context) => {
