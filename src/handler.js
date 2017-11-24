@@ -9,10 +9,13 @@
    - MAX_LABELS (default 10)
 
 */
-const profilerPlugin = require('iopipe-plugin-profiler');
+//const profilerPlugin = require('iopipe-plugin-profiler');
 const tracePlugin = require('iopipe-plugin-trace');
 const iopipe = require('iopipe')({
-  plugins: [profilerPlugin(), tracePlugin()]
+  plugins: [
+    //profilerPlugin(),
+    tracePlugin()
+  ]
 });
 
 const https = require('https'),
