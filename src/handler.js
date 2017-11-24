@@ -117,9 +117,10 @@ async function handleEvent(slackEvent, callback) {
 
 // Lambda handler
 exports.handler = iopipe((event, context, callback) => {
+    const slackEvent = JSON.parse(event.body);
     switch (event.type) {
-        case "url_verification": handleVerification(event, callback); break;
-        case "event_callback": handleEvent(event, callback); break;
+        case "url_verification": handleVerification(slackEvent, callback); break;
+        case "event_callback": handleEvent(slackEvent, callback); break;
         default: callback(null);
     }
 });
