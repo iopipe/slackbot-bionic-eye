@@ -8,7 +8,7 @@
 
 const https = require('https'),
       qs = require('querystring'),
-      aws = require('aws-sdk'),
+      AWS = require('aws-sdk'),
       request = require('request'),
       VERIFICATION_TOKEN = process.env.SLACK_VERIFICATION_TOKEN,
       ACCESS_TOKEN = process.env.SLACK_ACCESS_TOKEN,
@@ -28,13 +28,13 @@ function handleVerification(data, callback) {
 }
 
 // Post message to Slack - https://api.slack.com/methods/chat.postMessage
-function handleEvent(slackEvent, callback) {
+async function handleEvent(slackEvent, callback) {
   // make sure we don't originate from our bot user.
   if (slackEvent.event.bot_id) {
     callback(err);
   }
 
-  const result = imgRegex.exec(slackEvent.event.text));
+  const result = imgRegex.exec(slackEvent.event.text);
   if (result.length() !== 3) {
     callback(err)
   }
@@ -60,7 +60,7 @@ function handleEvent(slackEvent, callback) {
     });
   })
 
-  const s3putObject = new Promise((resolve, reject) => {
+  const s3putObject = new Promise((resolve) => {
     context.iopipe.mark.start('s3-putObject')
     s3.putObject({
       Body: imageData,
@@ -68,32 +68,32 @@ function handleEvent(slackEvent, callback) {
       Key: imgFilename 
     }, function s3putComplete(err, data) {
       context.iopipe.mark.stop('s3-putObject')
-      resolve({
+      resolve(err, {
         Bucket: process.env.S3_BUCKET,
         Name: imgFilename
       });
     });
   });
 
-  const labelText = new Promise((resolve, reject) => {
+  const labelText = async function (resolve) {
     context.iopipe.mark.start('rekognition-detectLabels')
     rekognition.detectLabels({
       Image: {
-       S3Object: await s3putObject();
+       S3Object: await s3putObject
       }, 
       MaxLabels: MAX_LABELS,
       MinConfidence: MIN_CONFIDENCE
     }, function rekognizeLabels(err ,data) {
       context.iopipe.mark.stop('rekognition-detectLabels')
       if (err) {
-        reject(err);
+        resolve(err, nil);
       }
       const text = data.reduce(function reduceLabels(acc, curval) {
         return `${curval} \`${acc.Name}\``
       });
-      resolve(text);
+      resolve(nil, text);
     })
-  })
+  }
 
   const message = { 
       token: ACCESS_TOKEN,
