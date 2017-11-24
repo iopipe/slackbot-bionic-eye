@@ -21,6 +21,15 @@ const s3 = new AWS.S3({apiVersion: '2006-03-01'}),
 const imgRegex = /(\S\.(png|jpeg|jpg|jpeg-large|jpg-large))(?:\s+|$)/ig
 
 
+const profiler = require('iopipe-plugin-profiler');
+const iopipe = require('iopipe')({
+  plugins: [profiler()]
+});
+
+exports.handler = iopipe((event, context) => {
+  context.succeed('Wow!');
+});
+
 // Verify Url - https://api.slack.com/events/url_verification
 function handleVerification(data, callback) {
     if (data.token === VERIFICATION_TOKEN) callback(null, data.challenge);
@@ -108,10 +117,10 @@ async function handleEvent(slackEvent, callback) {
 }
 
 // Lambda handler
-exports.handler = (event, context, callback) => {
+exports.handler = iopipe((event, context, callback) => {
     switch (event.type) {
         case "url_verification": handleVerification(event, callback); break;
         case "event_callback": handleEvent(event, callback); break;
         default: callback(null);
     }
-};
+});
