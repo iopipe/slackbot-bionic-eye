@@ -29,10 +29,6 @@ const imgRegex = /(\S\.(png|jpeg|jpg|jpeg-large|jpg-large))(?:\s+|$)/ig,
       MIN_CONFIDENCE = process.env.MIN_CONFIDENCE || 75,
       MAX_LABELS = process.env.MAX_LABELS || 10;
 
-exports.handler = iopipe((event, context) => {
-  context.succeed('Wow!');
-});
-
 // Verify Url - https://api.slack.com/events/url_verification
 function handleVerification(data, callback) {
     if (data.token === VERIFICATION_TOKEN) callback(null, data.challenge);
