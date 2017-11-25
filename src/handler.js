@@ -34,8 +34,16 @@ const imgRegex = /(\S\.(png|jpeg|jpg|jpeg-large|jpg-large))(?:\s+|$)/ig,
 
 // Verify Url - https://api.slack.com/events/url_verification
 function handleVerification(data, callback) {
-    if (data.token === VERIFICATION_TOKEN) callback(null, data.challenge);
-    else callback("verification failed");   
+    var successResponse = {
+        "isBase64Encoded": false,
+        "statusCode": 200,
+        "headers": {
+          "Content-type": "application/x-www-form-urlencoded"
+        },
+        "body": data.challenge
+    }
+    if (data.token === VERIFICATION_TOKEN) callback(null, successResponse);
+    else callback(null, { "statusCode": 400 });
 }
 
 // Post message to Slack - https://api.slack.com/methods/chat.postMessage
@@ -115,7 +123,7 @@ async function handleEvent(slackEvent, callback) {
   const query = qs.stringify(message); // prepare the querystring
   https.get(`https://slack.com/api/chat.postMessage?${query}`);
 
-  callback(null);       
+  callback(null);
 }
 
 // Lambda handler

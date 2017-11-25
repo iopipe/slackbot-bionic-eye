@@ -6,10 +6,15 @@ provider:
 
 functions:
   event:
-    handler: handler.handler
+    handler: dist/handler.handler
     events:
       - http:
           path: /
           method: POST
     environment:
-      variable2: value2
+      S3_BUCKET: slackbot-imgdesc
+      SLACK_VERIFICATION_TOKEN: 'hCaJRqXtzdkiZ6VR4JAN7SpJ'
+      SLACK_ACCESS_TOKEN: 'xoxp-20485307669-20490053920-278150875750-d5b76022f14b29a2212dc68453042a00'
+      MIN_CONFIDENCE: 75
+      MAX_LABELS: 10
+      IOPIPE_TOKEN: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNDAyZTQzNy0wNzIyLTQ0ZDktOGUyNy1jMGFjMjc2MzgxZTQiLCJqdGkiOiJmYTQzMDQxMi0zYThkLTQ5MzgtODA4My00YWIxODRjNmZmZjEiLCJpYXQiOjE1MDAzODgzMjgsImlzcyI6Imh0dHBzOi8vaW9waXBlLmNvbSIsImF1ZCI6Imh0dHBzOi8vaW9waXBlLmNvbSxodHRwczovL21ldHJpY3MtYXBpLmlvcGlwZS5jb20vZXZlbnQvLGh0dHBzOi8vZ3JhcGhxbC5pb3BpcGUuY29tIn0.Iez7L1pRsC1gk50H6-Qh99ZaduFfCixAPxgkfPmpElI"
