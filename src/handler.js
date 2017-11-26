@@ -60,6 +60,7 @@ async function handleEvent(slackEvent, context, callback) {
   console.log(JSON.stringify(slackEvent))
 
   // make sure we don't originate from our bot user.
+  context.iopipe.log("is_bot", (slackEvent.event.bot_id)?1:0)
   if (slackEvent.event.bot_id) {
     console.log("Bot user message... ignoring")
     return callback(null, httpSuccess);
@@ -196,6 +197,7 @@ async function handleEvent(slackEvent, context, callback) {
 // Lambda handler
 exports.handler = iopipe((event, context, callback) => {
     const slackEvent = JSON.parse(event.body);
+    context.iopipe.log("slackevent_type", slackEvent.type)
     switch (slackEvent.type) {
         case "url_verification": handleVerification(slackEvent, callback); break;
         case "event_callback": handleEvent(slackEvent, context, callback); break;
