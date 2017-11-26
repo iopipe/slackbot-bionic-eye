@@ -8,6 +8,7 @@ functions:
   event:
     handler: dist/handler.handler
     timeout: 15
+    memorySize: 128
     events:
       - http:
           path: /
