@@ -25,7 +25,7 @@ const https = require('https'),
       s3 = new AWS.S3({apiVersion: '2006-03-01'}),
       rekognition = new AWS.Rekognition({apiVersion: '2016-06-27'});
 
-const imgRegex = /<(\S+\.(png|jpeg|jpg|jpeg-large|jpg-large))>/ig,
+const imgRegex = /<(\S+\.(png|jpeg|jpg|jpeg-large|jpg-large)(?:|\?\S+))>/ig,
       VERIFICATION_TOKEN = process.env.SLACK_VERIFICATION_TOKEN,
       ACCESS_TOKEN = process.env.SLACK_ACCESS_TOKEN,
       S3_BUCKET = process.env.S3_BUCKET,
@@ -141,17 +141,32 @@ async function handleEvent(slackEvent, context, callback) {
         console.log(s3object[1])
         return resolve([err]);
       }
-      const text = data["Labels"].reduce(function reduceLabels(acc, curval) {
-        return `\`${curval['Name']}\` ${(typeof(acc) === 'object') ? "\`"+acc['Name']+"\'" : acc}`
-      });
+      var text;
+      if (data["Labels"].length > 0) {
+        text = data["Labels"].reduce(function reduceLabels(acc, curval) {
+          return `\`${curval['Name']}\` ${(typeof(acc) === 'object') ? "\`"+acc['Name']+"\`" : acc}`
+        });
+      } else {
+        text = "I did not recognize anything in this object. Sorry!"
+      }
       console.log(`rekognized labels: ${text}`);
       return resolve([null, text]);
     })
   })
 
+  /* Decide if message is in channel or thread, thread appropriately. */
+  var thread;
+  if (slackEvent.event.thread_ts) {
+    thread = slackEvent.event.thread_ts;
+  } else {
+    thread = slackEvent.event.ts;
+  }
+
   const message = { 
       token: ACCESS_TOKEN,
       channel: slackEvent.event.channel,
+      reply_broadcast: false,
+      thread_ts: thread,
       text: await labelText
   };
 
