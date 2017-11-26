@@ -7,6 +7,7 @@ provider:
 functions:
   event:
     handler: dist/handler.handler
+    timeout: 15
     events:
       - http:
           path: /
