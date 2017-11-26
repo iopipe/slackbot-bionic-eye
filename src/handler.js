@@ -12,9 +12,10 @@
 const profilerPlugin = require('iopipe-plugin-profiler');
 const tracePlugin = require('iopipe-plugin-trace');
 const iopipe = require('iopipe')({
+  token: process.env.IOPIPE_TOKEN,
   plugins: [
-    profilerPlugin(),
-    tracePlugin()
+    tracePlugin(),
+    profilerPlugin()
   ]
 });
 
@@ -66,23 +67,25 @@ async function handleEvent(slackEvent, context, callback) {
 
   const result = imgRegex.exec(slackEvent.event.text);
   if (!result || (result && result.length !== 3)) {
+    context.iopipe.log("has_image", false)
     console.log("No image found in text.")
     console.log(JSON.stringify(result))
     return callback(null, httpSuccess)
   }
+  context.iopipe.log("has_image", true)
 
   const imageURL = result[1],
         fileExt = result[2],
         imgFilename = `${slackEvent.team_id}/${slackEvent.event_id}.${fileExt}`;
 
-  // context.iopipe.mark.start('http-request')
+  //context.iopipe.mark.start('http-request')
   const imageData = new Promise((resolve, reject) => {
     /* TODO: remove callback and assign return value to imageData (it's a stream!) */
     request({
       url: imageURL,
       encoding: null
     }, function (err, response, imageData) {
-      // context.iopipe.mark.end('http-request')
+      //context.iopipe.mark.end('http-request')
 
       if (err) {
         console.log('error:', err); // Print the error if one occurred
@@ -98,7 +101,7 @@ async function handleEvent(slackEvent, context, callback) {
   })
 
   const s3putObject = new Promise(async function (resolve) {
-    // context.iopipe.mark.start('s3-putObject')
+    //context.iopipe.mark.start('s3-putObject')
     var imgResponse = await imageData
 
     /* handle error*/
@@ -111,7 +114,7 @@ async function handleEvent(slackEvent, context, callback) {
       Key: imgFilename,
       ContentType: imgResponse[2]
     }, function s3putComplete(err, data) {
-      // context.iopipe.mark.stop('s3-putObject')
+      //context.iopipe.mark.stop('s3-putObject')
       return resolve([err, {
         Bucket: S3_BUCKET,
         Name: imgFilename
@@ -120,7 +123,7 @@ async function handleEvent(slackEvent, context, callback) {
   });
 
   const labelText = new Promise(async function (resolve) {
-    // context.iopipe.mark.start('rekognition-detectLabels')
+    //context.iopipe.mark.start('rekognition-detectLabels')
     var s3object = await s3putObject
     /* handle error*/
     if (!s3object || s3object[0]) {
@@ -133,7 +136,7 @@ async function handleEvent(slackEvent, context, callback) {
       MaxLabels: MAX_LABELS,
       MinConfidence: MIN_CONFIDENCE
     }, function rekognizeLabels(err, data) {
-      // context.iopipe.mark.stop('rekognition-detectLabels')
+      //context.iopipe.mark.stop('rekognition-detectLabels')
       if (err) {
         console.log("Error in rekognize: \n")
         console.log(err)
@@ -141,6 +144,19 @@ async function handleEvent(slackEvent, context, callback) {
         console.log(s3object[1])
         return resolve([err]);
       }
+
+      context.iopipe.log("count_labels", data["Labels"].length);
+
+      var has_hotdog = 0;
+      if (data["Labels"].length > 0) {
+        has_hotdog = data["Labels"].reduce(
+          function lookHotdog(acc, curval) {
+            return (curval['Name'] === "Hot Dog") ^ ((typeof(acc) === 'object') ? acc['Name'] === "Hot Dog" : acc)
+          }
+        );
+      }
+      context.iopipe.log("has_hotdog", has_hotdog);
+
       var text;
       if (data["Labels"].length > 0) {
         text = data["Labels"].reduce(function reduceLabels(acc, curval) {
@@ -150,6 +166,7 @@ async function handleEvent(slackEvent, context, callback) {
         text = "I did not recognize anything in this object. Sorry!"
       }
       console.log(`rekognized labels: ${text}`);
+      context.iopipe.log("labels_list", text);
       return resolve([null, text]);
     })
   })
