@@ -45,6 +45,14 @@ then provide the _IOpipe Token_.
 
 ```$ sls deploy```
 
+## Create bucket & update IAM permissions
+
+Currently, users *must* update the role for their lambda function to
+include access to S3 and Rekognition manually.
+
+1. Create the bucket specified in your config.local.yml
+2. Add permission to your S3 bucket and to write to the AWS Rekognition service!
+
 ## Register for Slack events
 
 The deployment step will provide a URL we will give to Slack to register for

@@ -20,7 +20,7 @@ functions:
           path: /
           method: POST
     environment:
-      S3_BUCKET: slackbot-imgdesc
+      S3_BUCKET: ${self:custom.S3_BUCKET, ${env:S3_BUCKET, ""}}
       SLACK_VERIFICATION_TOKEN: ${self:custom.SLACK_VERIFICATION_TOKEN, ${env:SLACK_VERIFICATION_TOKEN, ""}}
       SLACK_ACCESS_TOKEN: ${self:custom.SLACK_ACCESS_TOKEN, ${env:SLACK_ACCESS_TOKEN, ""}}
       MIN_CONFIDENCE: ${self:custom.MIN_CONFIDENCE, ${env:MIN_CONFIDENCE, '75'}}
