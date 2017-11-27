@@ -34,12 +34,12 @@ Set the Slack _Verification Token_ and _Access Token_ variables
 as found in your Slack app configuration.
 
 ```
-SLACK_VERIFICATION_TOKEN: 'hCaJRqXtzdkiZ6VR4JAN7SpJ'
-SLACK_ACCESS_TOKEN: 'xoxb-277278978434-o14NKNoPDTGKpYY9UX8EsFcB'
+SLACK_VERIFICATION_TOKEN: '<token>'
+SLACK_ACCESS_TOKEN: '<token>'
 ```
 
 Optionally, register for [IOpipe](https://www.iopipe.com/) for observability and profiling tools,
-then provide the _IOpipe Token_.
+then provide the `IOPIPE_TOKEN` variable. The `IOPIPE_ENABLE_PROFILER` flag if true, will add profiling data.
 
 _Note_: the `config.local.yml` is _not_ included in the uploaded source code to protect your secrets!
 
