@@ -41,6 +41,8 @@ SLACK_ACCESS_TOKEN: 'xoxb-277278978434-o14NKNoPDTGKpYY9UX8EsFcB'
 Optionally, register for [IOpipe](https://www.iopipe.com/) for observability and profiling tools,
 then provide the _IOpipe Token_.
 
+_Note_: the `config.local.yml` is _not_ included in the uploaded source code to protect your secrets!
+
 3. Deploy!
 
 ```$ sls deploy```
