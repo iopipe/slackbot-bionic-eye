@@ -45,7 +45,19 @@ _Note_: the `config.local.yml` is _not_ included in the uploaded source code to 
 
 3. Deploy!
 
+### Using the serverless framework:
+
 ```$ sls deploy```
+
+### _Alternative_, using AWS SAM:
+
+```
+$ DEPLOY_BUCKET=bioniceye-deployment-$RANDOM
+$ aws s3 mb s3://$DEPLOY_BUCKET
+$ sls sam export -o template.yml
+$ sam package --template-file template.yml --output-template-file packaged.template.yml --s3-bucket $DEPLOY_BUCKET
+$ sam deploy --template-file packaged.template.yml --stack-name slackbot-bionic-eye
+```
 
 ## Create bucket & update IAM permissions
 
