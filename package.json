@@ -1,5 +1,5 @@
 {
-  "name": "slackbot-imgdesc",
+  "name": "slackbot-bionic-eye",
   "version": "1.0.0",
   "description": "Describes images posted into Slack, setting descriptions as image comments.",
   "main": "dist/handler.js",
@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iopipe/slackbot-imgdesc.git"
+    "url": "git+https://github.com/iopipe/slackbot-bionic-eye.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/iopipe/slackbot-imgdesc/issues"
+    "url": "https://github.com/iopipe/slackbot-bionic-eye/issues"
   },
-  "homepage": "https://github.com/iopipe/slackbot-imgdesc#readme",
+  "homepage": "https://github.com/iopipe/slackbot-bionic-eye#readme",
   "devDependencies": {
     "aws-lambda-mock-context": "^3.1.1",
     "babel-cli": "^6.26.0",
