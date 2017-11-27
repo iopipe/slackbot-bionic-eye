@@ -1,23 +1,29 @@
-service: slackbot-imgdesc
+service: slackbot-bionic-eye
 
 provider:
   name: aws
   runtime: nodejs6.10
 
+package:
+  exclude:
+    - config.local.yml
+
+custom: ${file(config.local.yml)}
+
 functions:
   event:
     handler: dist/handler.handler
-    timeout: 15
-    memorySize: 256
+    timeout: 3
+    memorySize: 512
     events:
       - http:
           path: /
           method: POST
     environment:
       S3_BUCKET: slackbot-imgdesc
-      SLACK_VERIFICATION_TOKEN: 'hCaJRqXtzdkiZ6VR4JAN7SpJ'
-      SLACK_ACCESS_TOKEN: 'xoxb-277278978434-o14NKNoPDTGKpYY9UX8EsFcB'
-      MIN_CONFIDENCE: 75
-      MAX_LABELS: 10
-      IOPIPE_TOKEN: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNDAyZTQzNy0wNzIyLTQ0ZDktOGUyNy1jMGFjMjc2MzgxZTQiLCJqdGkiOiJmYTQzMDQxMi0zYThkLTQ5MzgtODA4My00YWIxODRjNmZmZjEiLCJpYXQiOjE1MDAzODgzMjgsImlzcyI6Imh0dHBzOi8vaW9waXBlLmNvbSIsImF1ZCI6Imh0dHBzOi8vaW9waXBlLmNvbSxodHRwczovL21ldHJpY3MtYXBpLmlvcGlwZS5jb20vZXZlbnQvLGh0dHBzOi8vZ3JhcGhxbC5pb3BpcGUuY29tIn0.Iez7L1pRsC1gk50H6-Qh99ZaduFfCixAPxgkfPmpElI"
-      IOPIPE_ENABLE_PROFILER: true
+      SLACK_VERIFICATION_TOKEN: ${self:custom.SLACK_VERIFICATION_TOKEN, ${env:SLACK_VERIFICATION_TOKEN, ""}}
+      SLACK_ACCESS_TOKEN: ${self:custom.SLACK_ACCESS_TOKEN, ${env:SLACK_ACCESS_TOKEN, ""}}
+      MIN_CONFIDENCE: ${self:custom.MIN_CONFIDENCE, ${env:MIN_CONFIDENCE, '75'}}
+      MAX_LABELS: ${self:custom.MAX_LABELS, ${env:MAX_LABELS, '10'}}
+      IOPIPE_TOKEN: ${self:custom.IOPIPE_TOKEN, ${env:IOPIPE_TOKEN, ""}}
+      IOPIPE_ENABLE_PROFILER: ${self:custom.IOPIPE_ENABLE_PROFILER, ${env:IOPIPE_ENABLE_PROFILER, "false"}}
