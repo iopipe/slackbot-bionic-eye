@@ -1,0 +1,7 @@
+S3_BUCKET: '<s3 bucket name>'
+SLACK_VERIFICATION_TOKEN: '<slack verification token>'
+SLACK_ACCESS_TOKEN: '<slack app bot user oauth token>'
+MIN_CONFIDENCE: 75
+MAX_LABELS: 10
+IOPIPE_TOKEN: ""
+IOPIPE_ENABLE_PROFILER: true
