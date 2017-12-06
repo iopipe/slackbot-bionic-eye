@@ -1,14 +1,3 @@
-/* Usage:
-
-   set environment variables:
-
-   - S3_BUCKET (required)
-   - SLACK_VERIFICATION_TOKEN (required)
-   - SLACK_ACCESS_TOKEN (required)
-   - MIN_CONFIDENCE (default 75)
-   - MAX_LABELS (default 10)
-
-*/
 const profilerPlugin = require('@iopipe/profiler');
 const tracePlugin = require('iopipe-plugin-trace');
 const iopipe = require('iopipe')({

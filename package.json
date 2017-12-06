@@ -52,6 +52,7 @@
   "dependencies": {
     "@iopipe/profiler": "^0.1.0",
     "aws-sdk": "^2.109.0",
+    "babel-runtime": "^6.26.0",
     "iopipe": "^1.2.0",
     "iopipe-plugin-trace": "^0.2.0"
   }
