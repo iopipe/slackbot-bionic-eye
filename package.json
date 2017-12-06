@@ -21,8 +21,8 @@
     "slack",
     "bot"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "IOpipe <dev@iopipe.com>",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/iopipe/slackbot-bionic-eye/issues"
   },
