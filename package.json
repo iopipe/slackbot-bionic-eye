@@ -16,9 +16,13 @@
     "type": "git",
     "url": "git+https://github.com/iopipe/slackbot-bionic-eye.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "lambda",
+    "slack",
+    "bot"
+  ],
+  "author": "IOpipe <dev@iopipe.com>",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/iopipe/slackbot-bionic-eye/issues"
   },
@@ -46,10 +50,10 @@
     "webpack": "^3.0.0"
   },
   "dependencies": {
+    "@iopipe/profiler": "^0.1.0",
     "aws-sdk": "^2.109.0",
     "babel-runtime": "^6.26.0",
     "iopipe": "^1.2.0",
-    "iopipe-plugin-profiler": "github:iopipe/iopipe-plugin-profiler",
     "iopipe-plugin-trace": "^0.2.0"
   }
 }

@@ -1,7 +1,6 @@
-const profilerPlugin = require('iopipe-plugin-profiler');
+const profilerPlugin = require('@iopipe/profiler');
 const tracePlugin = require('iopipe-plugin-trace');
 const iopipe = require('iopipe')({
-  token: process.env.IOPIPE_TOKEN,
   plugins: [
     tracePlugin(),
     profilerPlugin()
