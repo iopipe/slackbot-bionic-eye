@@ -1,14 +1,3 @@
-/* Usage:
-
-   set environment variables:
-  
-   - S3_BUCKET (required)
-   - SLACK_VERIFICATION_TOKEN (required)
-   - SLACK_ACCESS_TOKEN (required)
-   - MIN_CONFIDENCE (default 75)
-   - MAX_LABELS (default 10)
-
-*/
 const profilerPlugin = require('iopipe-plugin-profiler');
 const tracePlugin = require('iopipe-plugin-trace');
 const iopipe = require('iopipe')({
@@ -129,11 +118,11 @@ async function handleEvent(slackEvent, context, callback) {
     /* handle error*/
     if (!s3object || s3object[0]) {
       return resolve([s3object])
-    }   
+    }
     rekognition.detectLabels({
       Image: {
        S3Object: s3object[1]
-      }, 
+      },
       MaxLabels: MAX_LABELS,
       MinConfidence: MIN_CONFIDENCE
     }, function rekognizeLabels(err, data) {
@@ -180,7 +169,7 @@ async function handleEvent(slackEvent, context, callback) {
     thread = slackEvent.event.ts;
   }
 
-  const message = { 
+  const message = {
       token: ACCESS_TOKEN,
       channel: slackEvent.event.channel,
       reply_broadcast: false,
