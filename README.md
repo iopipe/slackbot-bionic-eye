@@ -1,5 +1,7 @@
 # Slack Image Descriptions
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/iopipe/slackbot-bionic-eye.svg)](https://greenkeeper.io/)
+
 Describes images posted into Slack, setting descriptions
 as image comments. 
 
